@@ -120,6 +120,8 @@
                 </td>
             </tr>
         </table>
+        
+        <p>We spent a long time researching smoke simulations and aspects of fluid dynamics. And so, despite not being able to actually simulate smoke via the navier-stokes equations in 3D,, we wanted to still render smoke while exploring particle systems via building minecraft torches. The flame and smoke are both particle systems. Each particle has a “lifetime” for how long they last before they are “deleted” as well as a frequency for how often new particles are spawned. By keeping track of the difference between the elapsedTime and a particle’s spawn time and comparing it with the particle_life, one can determine whether the particle should be kept or removed. For the central minecraft torch, the particle lifetime, emit rate, and rate at which particles fade away in transparency can be adjusted. For each flame particle, at each timestamp the y position of particles and particle size is increased by 0.001. For each smoke particle, at each timestep a random number is generated and added for both the x coordinate and z coordinate, while the y coordinate increases by 0.005 multiplied by some scalar value, used to determine the relative sizes of torches; however, at each timestep each smoke particle’s size and alpha (or transparency) value decrease as well which gives the effect of the smoke fading over time. </p>
     </div>
 
     <br>
