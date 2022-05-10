@@ -4,8 +4,8 @@
 <head>
     <style>
         body {
-            padding: 100px;
-            width: 1000px;
+            padding: 50px;
+            width: 1100px;
             margin: auto;
             text-align: left;
             font-weight: 300;
@@ -20,68 +20,147 @@
             font-family: 'Source Sans Pro', sans-serif;
         }
     </style>
-    <title>CS 184 Final Project Proposal</title>
+    <title>CS 184 Final Project Writeup</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 </head>
 
+
 <body>
+
     <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2022</h1>
-    <h1 align="middle">Final Project Proposal</h1>
-    <h2 align="middle">Alina Wang, David Wei, Anvi Jain, David Lin</h2>
+    <h1 align="middle">Final Project: Drowning Octopus</h1>
+    <h2 align="middle">David Wei, Alina Wang, Avni Jain, David Lin</h2>
 
-    <h3 align="middle"> Disclaimer Regarding Terminology</h3>
-    <p>We use “black hole” to refer to any large enough mass which can visibly bend light. So this can simply include objects that have large gravitational masses.
-    </p>
+    <br><br>
 
-    <h3 align="middle">Summary</h3>
-    <p>We want to implement ray tracing with the addition of black hole physics. This will challenge us to treat rays differently than the straight line approximations of past projects, as black holes/large mass objects are widely known to bend light due
-        to the effects of gravitational lensing. We wish to simulate light around a blackhole, and extend our implementation to see what happens when we put a black hole inside a Cornell Box.
-    </p>
+    <div>
 
-    <h3 align="middle"> Project Description</h3>
-    <p>We were inspired to pursue this idea after seeing the black hole examples of past semesters’ final submissions. There are many resources and existing implementations, which will aid us in creating a bare-bone simulation of light around a black hole.
-        We want to extend our implementation, however, as we think it would be interesting to put a black hole inside a Cornell Box and observe how it affects our final rendered image. We anticipate a few challenges along the way. Being able to simulate
-        the light around a black hole will be challenging as it requires us to research the physical properties of light and how large masses can influence them. Assuming that we tackle this step efficiently, modeling such a mass inside a Cornell Box
-        will require us to alter the implementation of past projects. We have not come up with a solution for placing a black hole inside a Cornell Box at the time of writing.
+        <h2 align="middle">Abstract</h2>
+        <p>For our final project we learned Three.js and implemented a water scene. We explored how to simulate smoke particles in a physically-realistic 3D setting, fluid dynamics, and WebGL shaders. Ultimately, we decided to create an open, 3D setting
+            with camera controls that displayed a shaded 2D plane which mimics a 3D ocean scene. We used Blinn-Phong shading for reflectivity/refractivity and introduced a time variant to emulate wave movements and light scattering. We also included our
+            smaller accomplishments such as a smoke-particle torch, blender-generated octopus, and three.js gui in the final scene to demonstrate our progress throughout the entire project.
+        </p>
 
-    </p>
+        <br>
+
+        <h2 align="middle">Technical Approach</h2>
+        <p>Given that all of us had no experience with Three.js and smoke and fluid simulations, the first few weeks were spent researching and implementing toy solutions. We read papers, played around with several simulations, and watched several tutorials
+            on Three.js and smoke/fluid simulations to find the best way to translate physics into a simulation.
+        </p>
+        <p>From the start, we wanted to simulate water or smoke in an interactive 3D space. We attempted to build off of existing simulations by adding a third dimension. However, we found our approach to be flawed since adding a z-axis alone could not accurately
+            represent the physics of fluid or smoke correctly. Introducing another axis required knowledge of the underlying mathematical models, which we were all unfamiliar with and inexperienced in. Smoke was also much harder to represent correctly,
+            therefore we attempted to focus more on water. </p>
+
+        <p>
+            Because of this, we decided to switch gears to an alternative method – treating water as a 2D plane. We can then rotate the plane horizontally and shade the plane. Instead of focusing on the physical properties of fluids, we decided to model how the water
+            should look and shade the 2D plane to emulate a 3D ocean scene. We built our scene following a tutorial on building an ocean using the water object in Three.js’s library. We then built our water object modeled off of Mr.dDoob’s three.js library.
+        </p>
+
+        <p>
+            Water has many interesting visual properties, but we focused mainly on reflectivity/refractivity. In order to emulate the reflective property of water, we used the Blinn-Phong reflectivity model from class. We referenced code used in existing Blinn-Phong
+            shaders, one example which can be found here: https://en.wikipedia.org/wiki/Blinn–Phong_reflection_model. We also introduce refractivity, which is nearly identical to reflectivity except for the angle and direction of the ray. These alone
+            are enough to capture the reflectivity/refractivity properties of water, but applying these methods by themselves would reveal an unconvincing, shiny plane with little variations. Especially since we are projecting our texture map onto the
+            2D plane, you would essentially see our texture map, but shiny.
+        </p>
+        <table width="100%">
+            <tr align="Middle">
+                <td>
+                    <img src="images/distorted.png" width="350px" align="middle" />
+                    <figcaption align="middle">Mesh without any shearing constraints</figcaption>
+                </td>
+
+                <td>
+                    <img src="images/not_distorted.png" width="350px" align="middle" />
+                    <figcaption align="middle">Mesh with only shearing constraints</figcaption>
+                </td>
+            </tr>
+        </table>
+
+
+        <p>In order to truly simulate a “moving” ocean, we use a time variable captured from the three.js animator and apply an offset to the pixel’s position on the texture map. This creates an effect of stretching and squashing the texture map, all while
+            maintaining the same relative size “pulled” over the 2D plane. As a contrived metaphor, imagine stretching a sheet cover over your mattress. As long as the edges are “tucked,” you can push and pull at the top of the mattress and see the sheet
+            cover move around. In our scenario, the mattress is the 2D plane and the sheet cover is our texture map. This time-step hack gives the illusion that the ocean is moving back and forth, like waves would.
+        </p>
+        <table width="100%">
+            <tr align="Middle">
+                <td>
+                    <img src="images/P1_pinned2_noshear.png" width="350px" align="middle" />
+                    <figcaption align="middle">Mesh without any shearing constraints</figcaption>
+                </td>
+
+                <td>
+                    <img src="images/P1_pinned2_sheer.png" width="350px" align="middle" />
+                    <figcaption align="middle">Mesh with only shearing constraints</figcaption>
+                </td>
+                <td>
+                    <img src="images/P1_pinned2_all.png" width="350px" align="middle" />
+                    <figcaption align="middle">Mesh with all constraints</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <br>
 
-    <h3 align="middle">Goals and Deliverables</h3>
-    <h4>What we plan to deliver </h4>
-    <p>We hope to simulate the effect of a gravitational pull on light. The minimum project that we will deliver is going to be modeling this effect around a black hole in empty space. Since it will be relatively obvious once we achieve a successful solution,
-        we believe our benchmark for success is simply “does it look correct.”
+    <div>
+        <h2 align="middle">Challenges</h2>
+        <p>
+            Overall, we encountered two major challenges throughout the project. First, all of us did not have experience with Three.js so we had a difficult time learning the framework and understanding how the rendering process worked with the inclusion of shaders.
+            Moreover, we struggled to learn how to build custom shaders in three.js and integrate it as a similar strategy to how other projects implemented their particle system model. Secondly, we struggled to settle on a goal. We started off wanting
+            to render black holes, then pivoted to smoke simulations, and finally to focus on water. That put us under a huge time crunch and made it harder for us to understand what was necessary to render something accurately in 3D space.
+        </p>
 
-    </p>
-    <h4>What we hope to deliver </h4>
-    <p>What we aspire to do if everything goes well is to showcase an image like CBunny.dae used in project 3-1, and then have the option to place blackholes/large gravitational masses anywhere within the cornell box and adjust the gravitational strength
-        and then render the resulting images. We believe that rendering for such a project will take extremely long. While we don’t have many concrete metrics yet, what we think are good signs of a proper rendering are: within the Schwarzfeld radius of
-        the black hole, it will be all black; light curves around the edge of the black hole, images extremely far from the gravitational mass are not altered that significantly.
-    </p>
-    <br>
 
-    <h3 align="Schedule">Schedule</h3>
-    <p>We will be working on this project regularly to keep up with our tasks. We will start with implementing the black hole itself and then, upon success, putting it inside a Cornell box. This project is going to require us to first learn about the physics
-        of black holes so that we have a better sense on how to implement it. We will first build a correct rendering of a black hole. Then, we need to modify a dae file to hold a black hole. And render the image to see how a light and Cornell box responds
-        to a black hole. </p>
-
-    <p>Week 0 - 2: Build black hole simulation</p>
-    <p>Week 2 - 3: Place black hole in Cornell Box</p>
-    <p>Week 3 - 4: Buffer</p>
+    </div>
 
     <br>
 
-    <h3 align="middle">Resources</h3>
-    <a href="https://celticspwn.github.io/CS184FinalProject/final.html">https://celticspwn.github.io/CS184FinalProject/final.html</a>
+    <div>
+        <h2 align="middle">Lesson's Learnt</h2>
+
+    </div>
+
     <br>
-    <a href="https://rantonels.github.io/starless/">https://rantonels.github.io/starless/</a>
+    <div>
+        <h2 align="middle">Results</h2>
+
+
+    </div>
     <br>
-    <a href="http://spiff.rit.edu/classes/phys240/lectures/grav_lens/grav_lens.html"> http://spiff.rit.edu/classes/phys240/lectures/grav_lens/grav_lens.html</a>
+    <div>
+        <h2 align="middle">Resources</h2>
+
+        <a href="https://web.stanford.edu/class/cs237d/smoke.pdf" align="middle">Stanford Smoke Simulation Paper</a>
+        <br>
+        <a href="https://rachelbhadra.github.io/smoke_simulator/" align="middle">Former 184 Smoke Simulation Final Project</a>
+        <br>
+        <a href="https://github.com/mrdoob/three.js/blob/master/examples/jsm/objects/Water.js" align="middle">Water Library from Mr.Droob</a>
+        <br>
+        <a href="https://www.liquid.fish/current/threejs" align="middle">Building the Ocean tutorial</a>
+
+    </div>
     <br>
-    <a href="https://iopscience.iop.org/article/10.1088/0264-9381/32/6/065001">https://iopscience.iop.org/article/10.1088/0264-9381/32/6/065001</a>
-    <br>
-    <a href="https://galaxiesbook.org/chapters/III-04.-Gravitational-Lensing.html">https://galaxiesbook.org/chapters/III-04.-Gravitational-Lensing.html</a>
+    <div>
+        <h2 align="middle">Contributions</h2>
+        <p> Everyone: collevtively researched, read, and watched tutorials on smoke and water simulations. </p>
+
+
+        <p>
+            Alina: Followed tutorial to build ocean scene, constructed bouncing and transparent cube, added dat.gui controls for toggling objects in scene (cube’s z coordinate, sun position controls, and reflection distortion)
+        </p>
+        Avni Jain: Constructed and shaded Octopus in blender, wrote script for presentation and helped finish the scene by importing the octopus.
+
+        <p>
+            David Wei: Constructed Water Library, built presentation slides.
+        </p>
+
+        <p>
+            David Lin: Constructed torches, learnt about particle systems, helped with shader’s research, imported octopus and torches to create the final scene.
+        </p>
+
+
+    </div>
 </body>
 
 </html>
