@@ -54,8 +54,16 @@
 
         <p>
             Because of this, we decided to switch gears to an alternative method – treating water as a 2D plane. We can then rotate the plane horizontally and shade the plane. Instead of focusing on the physical properties of fluids, we decided to model how the water
-            should look and shade the 2D plane to emulate a 3D ocean scene. We built our scene following a tutorial on building an ocean using the water object in Three.js’s library. We then built our water object modeled off of Mr.dDoob’s three.js library.
+            should look and shade the 2D plane to emulate a 3D ocean scene. We built our scene following a tutorial on building an ocean using the water object in Three.js’s library. We then built our water object modeled off of Mr.Droob’s three.js library.
         </p>
+        <table width="100%">
+            <tr align="Middle">
+                <td>
+                    <img src="images/2d-plane.png" width="350px" align="middle" />
+                    <figcaption align="middle">Ocean as a 2D plane</figcaption>
+                </td>
+            </tr>
+        </table>
 
         <p>
             Water has many interesting visual properties, but we focused mainly on reflectivity/refractivity. In order to emulate the reflective property of water, we used the Blinn-Phong reflectivity model from class. We referenced code used in existing Blinn-Phong
@@ -63,19 +71,16 @@
             are enough to capture the reflectivity/refractivity properties of water, but applying these methods by themselves would reveal an unconvincing, shiny plane with little variations. Especially since we are projecting our texture map onto the
             2D plane, you would essentially see our texture map, but shiny.
         </p>
+
         <table width="100%">
             <tr align="Middle">
                 <td>
-                    <img src="images/distorted.png" width="350px" align="middle" />
-                    <figcaption align="middle">Mesh without any shearing constraints</figcaption>
-                </td>
-
-                <td>
-                    <img src="images/not_distorted.png" width="350px" align="middle" />
-                    <figcaption align="middle">Mesh with only shearing constraints</figcaption>
+                    <img src="images/blinn-phong.png" width="350px" align="middle" />
+                    <figcaption align="middle">Blinn-Phong Shading Model</figcaption>
                 </td>
             </tr>
         </table>
+
 
 
         <p>In order to truly simulate a “moving” ocean, we use a time variable captured from the three.js animator and apply an offset to the pixel’s position on the texture map. This creates an effect of stretching and squashing the texture map, all while
@@ -106,9 +111,9 @@
     <div>
         <h2 align="middle">Challenges</h2>
         <p>
-            Overall, we encountered two major challenges throughout the project. First, all of us did not have experience with Three.js so we had a difficult time learning the framework and understanding how the rendering process worked with the inclusion of shaders.
-            Moreover, we struggled to learn how to build custom shaders in three.js and integrate it as a similar strategy to how other projects implemented their particle system model. Secondly, we struggled to settle on a goal. We started off wanting
-            to render black holes, then pivoted to smoke simulations, and finally to focus on water. That put us under a huge time crunch and made it harder for us to understand what was necessary to render something accurately in 3D space.
+            Overall, we encountered two major challenges throughout the project. First, all of us did not have experience with Three.js or WebGL so we had a difficult time learning the framework and understanding how the rendering process worked with the inclusion
+            of shaders. Moreover, we struggled to learn how to build custom shaders in three.js and integrate it as a similar strategy to how other projects implemented their particle system model. Secondly, we struggled to settle on a goal. We started
+            off wanting to render black holes, then pivoted to smoke simulations, and finally to focus on water. That put us under a huge time crunch and made it harder for us to understand what was necessary to render something accurately in 3D space.
         </p>
 
 
@@ -125,6 +130,19 @@
     <div>
         <h2 align="middle">Results</h2>
 
+        <table width="100%">
+            <tr align="Middle">
+                <td>
+                    <img src="images/distorted.png" width="350px" align="middle" />
+                    <figcaption align="middle">Cube with distorted reflection</figcaption>
+                </td>
+
+                <td>
+                    <img src="images/not_distorted.png" width="350px" align="middle" />
+                    <figcaption align="middle">cube without distorted reflection</figcaption>
+                </td>
+            </tr>
+        </table>
 
     </div>
     <br>
