@@ -91,23 +91,7 @@
 
 
         <p>In order to truly simulate a “moving” ocean, we use a time variable captured from the three.js animator and apply an offset to the pixel’s position on the texture map. This creates an effect of stretching and squashing the texture map, all while maintaining the same relative size “pulled” over the 2D plane. As a contrived metaphor, imagine stretching a sheet cover over your mattress. As long as the edges are “tucked,” you can push and pull at the top of the mattress and see the sheet cover move around. In our scenario, the mattress is the 2D plane and the sheet cover is our texture map. This time-step hack gives the illusion that the ocean is moving back and forth, like waves would. </p> 
-        <table width="100%">
-            <tr align="Middle">
-                <td>
-                    <img src="images/P1_pinned2_noshear.png" width="350px" align="middle" />
-                    <figcaption align="middle">Mesh without any shearing constraints</figcaption>
-                </td>
-
-                <td>
-                    <img src="images/P1_pinned2_sheer.png" width="350px" align="middle" />
-                    <figcaption align="middle">Mesh with only shearing constraints</figcaption>
-                </td>
-                <td>
-                    <img src="images/P1_pinned2_all.png" width="350px" align="middle" />
-                    <figcaption align="middle">Mesh with all constraints</figcaption>
-                </td>
-            </tr>
-        </table>
+       
         
         <p>We spent a long time researching smoke simulations and aspects of fluid dynamics. Despite not being able to actually simulate smoke via the navier-stokes equations in 3D, we wanted to still render smoke while exploring particle systems via building minecraft torches. The flame and smoke are both particle systems. Each particle has a “lifetime” for how long they last before they are “deleted” as well as a frequency for how often new particles are spawned. By keeping track of the difference between the elapsedTime and a particle’s spawn time and comparing it with the particle_life, one can determine whether the particle should be kept or removed. For the central minecraft torch, the particle lifetime, emit rate, and rate at which particles fade away in transparency can be adjusted. For each flame particle, at each timestamp the y position of particles and particle size is increased by 0.001. For each smoke particle, at each timestep a random number is generated and added for both the x coordinate and z coordinate, while the y coordinate increases by 0.005 multiplied by some scalar value, used to determine the relative sizes of torches; however, at each timestep each smoke particle’s size and alpha (or transparency) value decrease as well which gives the effect of the smoke fading over time. </p>
     
